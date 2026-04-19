@@ -50,5 +50,3 @@ output/
 **This pipeline transforms raw e-commerce CSVs into a clean, typed, analytics-ready Parquet dataset - perfect for cloud data warehouses!** 🎯
 
 ***
-
-**Copy this into your README.md under "Data Processing Pipeline" section!** 🚀

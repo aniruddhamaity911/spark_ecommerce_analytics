@@ -33,8 +33,9 @@ public class Main {
 //        String outputfilePath = "src/main/resources/output";
 
         Map<String, String> params = new HashMap<>();
-        for (int i = 0; i < args.length; i += 2) {
-            params.put(args[i], args[i + 1]);
+        for (int i = 0; i < args.length; i += 1) {
+            String[] argument = args[i].split("=");
+            params.put(argument[0], argument[1]);
         }
 
         String customerDataPath = params.get("--customers");

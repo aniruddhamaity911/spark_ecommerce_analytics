@@ -20,16 +20,11 @@
 3. **📋 Schema Transformation**
    - **Select only** columns from `schema.json`
    - **Convert types**: string → `date`, `long`, etc.
-   - **Enforce nullability** rules from schema
 
 4. **💾 Output Parquet**
    - Write optimized columnar Parquet format
    - **Ready for BigQuery, Snowflake, Redshift**
 
-### **Visual Pipeline:**
-```
-![Data Flow](images/flow-diagram.png)
-```
 
 ### **Why This Architecture?**
 
@@ -50,10 +45,7 @@ output/
 └── _SUCCESS                      ✅ Ready for data warehouse
 ```
 
-```
-# Load in BigQuery (1 command):
-bq load --source_format=PARQUET dataset.table output/
-```
+
 
 **This pipeline transforms raw e-commerce CSVs into a clean, typed, analytics-ready Parquet dataset - perfect for cloud data warehouses!** 🎯
 

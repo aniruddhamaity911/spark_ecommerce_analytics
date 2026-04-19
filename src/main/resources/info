@@ -1,0 +1,12 @@
+customer Data
+customer_id,customer_Name,last_login
+
+order Item Data
+order_id|product_id|quantity|item_price
+
+order data
+order_id|customer_id|order_date|status
+
+
+outputData
+customer_id|product_id|quantity|order_date

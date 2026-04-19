@@ -1,92 +1,62 @@
-# E-commerce Analytics: CSV to Parquet Pipeline 🚀
+## **🔄 Data Processing Pipeline**
 
-Convert multiple CSV files into a unified Parquet dataset by joining, with **custom schema control** using Apache Spark.
+### **Step-by-Step Transformation Flow**
 
-## ✨ **What it does**
+<img src="src/main/resources/E_commerce_analytics_platform.jpg" alt="Flow Diagram" width="700"  />
 
-**Input:** 4 files  
-**Output:** Single Parquet dataset with schema from JSON
+### **Detailed Processing Steps:**
 
+1. **📥 Extract & Clean**
+   - Load `customers.csv`, `orders.csv`, `order_items.csv`
+   - Remove nulls, duplicates, fix data quality issues
+   
+2. **🔗 Join Datasets**
+   ```
+   customers + orders    →   [customer_id, customer_name, order_id, order_date, status]
+                              ↓
+                       + order_items  →  [customer_id, order_id, order_date, product_id, quantity]
+   ```
+
+3. **📋 Schema Transformation**
+   - **Select only** columns from `schema.json`
+   - **Convert types**: string → `date`, `long`, etc.
+   - **Enforce nullability** rules from schema
+
+4. **💾 Output Parquet**
+   - Write optimized columnar Parquet format
+   - **Ready for BigQuery, Snowflake, Redshift**
+
+### **Visual Pipeline:**
 ```
-📥 INPUT FILES:
-├── customers.csv          → customer_id, customer_name, last_login
-├── order_items.csv       → order_id | product_id | quantity | item_price  
-├── orders.csv            → order_id | customer_id | order_date | status
-└── schema.json           → Output schema definition
-
-📤 OUTPUT:
-└── output.parquet/       → Unified dataset with exact schema from JSON
-```
-
-## 🏗️ **Output Schema** (from JSON)
-
-```json
-{
-  "type": "struct",
-  "fields": [
-    { "name": "customer_id", "type": "string", "nullable": false },
-    { "name": "order_id", "type": "string", "nullable": false },
-    { "name": "order_date", "type": "date", "nullable": true },
-    { "name": "product_id", "type": "string", "nullable": true },
-    { "name": "quantity", "type": "long", "nullable": true }
-  ]
-}
+![Data Flow](images/flow-diagram.png)
 ```
 
-## 🚀 **Quick Start**
+### **Why This Architecture?**
 
-### 1. **Prepare your data files**
 ```
-data/
-├── customers.csv
-├── order_items.csv  
-├── orders.csv
-└── schema.json
-```
-
-
-### 2. **Verify output**
-```bash
-spark.read.parquet("data/output/").show()
+CSV Limitations ❌        →       Parquet Advantages ✅
+├── No schema/types      →      ✅ Typed schema preserved
+├── Slow queries         →      ✅ 10x faster columnar reads
+├── Huge file sizes      →      ✅ 90% compression
+├── No partitioning      →      ✅ Optimized for analytics
+└── Hard to analyze      →      ✅ BigQuery-ready instantly
 ```
 
-## 📋 **Sample Input Data**
-
-**customers.csv:**
+### **Production Ready Output:**
 ```
-customer_id,customer_name,last_login
-C001,John Doe,2026-04-10
-C002,Jane Smith,2026-04-15
-```
-
-**order_items.csv:**
-```
-order_id|product_id|quantity|item_price
-O001|P001|2|29.99
-O001|P002|1|49.99
+output/
+├── part-00000.snappy.parquet     ✅ Schema enforced
+├── part-00001.snappy.parquet     ✅ Types converted  
+└── _SUCCESS                      ✅ Ready for data warehouse
 ```
 
-**orders.csv:**
 ```
-order_id|customer_id|order_date|status
-O001|C001|2026-04-12|completed
-O002|C002|2026-04-13|shipped
+# Load in BigQuery (1 command):
+bq load --source_format=PARQUET dataset.table output/
 ```
 
-**Schema.json**
-```
-{
-  "type": "struct",
-  "fields": [
-    { "name": "customer_id", "type": "string", "nullable": false },
-    { "name": "order_id", "type": "string", "nullable": false },
-    { "name": "order_date", "type": "date", "nullable": true },
-    { "name": "product_id", "type": "string", "nullable": true },
-    { "name": "quantity", "type": "long", "nullable": true }
-  ]
-}
-```
-
+**This pipeline transforms raw e-commerce CSVs into a clean, typed, analytics-ready Parquet dataset - perfect for cloud data warehouses!** 🎯
 
 ***
 
+**Copy this into your README.md under "Data Processing Pipeline" section!** 🚀
